@@ -13,6 +13,7 @@ api.use(bodyParser.json());
 
 // routes
 api.get("/tasks", (request, response) => {
+  console.log("request received: ");
   pool.query("SELECT * FROM tasks ORDER BY id DESC", (err, res) => {
     if (err) return console.log(err);
     response.json(res.rows);
