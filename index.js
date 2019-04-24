@@ -1,15 +1,16 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const { Pool } = require("pg");
 
 const dbConfig = require("./dbConfig");
 
 const api = express();
 const pool = new Pool(dbConfig);
-const port = 3000;
+const port = 4000;
 
 // middleware
-api.use(bodyParser.json());
+api.use(cors(), bodyParser.json());
 
 // routes
 api.get("/tasks", (request, response) => {
