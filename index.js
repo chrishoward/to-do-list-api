@@ -15,10 +15,14 @@ api.use(cors(), bodyParser.json());
 // routes
 api.get("/tasks", (request, response) => {
   console.log("request received: ");
-  pool.query("SELECT * FROM tasks ORDER BY id DESC", (err, res) => {
-    if (err) return console.log(err);
-    response.json(res.rows);
-  });
+  // pool.query("SELECT * FROM tasks ORDER BY id DESC", (err, res) => {
+  pool.query(
+    "SELECT id, data -> 'description' AS description, data -> 'completed' AS completed FROM tasks",
+    (err, res) => {
+      if (err) return console.log(err);
+      response.json(res.rows);
+    }
+  );
 });
 
 api.post("/tasks", (request, response) => {
@@ -41,7 +45,7 @@ api.put("/tasks/:id", (request, response) => {
     [JSON.stringify(data), id],
     (err, res) => {
       if (err) return console.log(err);
-      response.redirect("/tasks");
+      response.redirect(303, "/tasks");
     }
   );
 });
@@ -50,7 +54,7 @@ api.delete("/tasks/:id", (request, response) => {
   const { id } = request.params;
   pool.query("DELETE FROM tasks WHERE id=($1)", [id], (err, res) => {
     if (err) return console.log(err);
-    response.redirect("/tasks");
+    response.redirect(303, "/tasks");
   });
 });
 
