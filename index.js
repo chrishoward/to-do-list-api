@@ -17,7 +17,7 @@ api.get("/tasks", (request, response) => {
   console.log("request received: ");
   // pool.query("SELECT * FROM tasks ORDER BY id DESC", (err, res) => {
   pool.query(
-    "SELECT id, data -> 'description' AS description, data -> 'completed' AS completed FROM tasks",
+    "SELECT id, data -> 'description' AS description, data -> 'completed' AS completed FROM tasks ORDER BY id DESC",
     (err, res) => {
       if (err) return console.log(err);
       response.json(res.rows);
